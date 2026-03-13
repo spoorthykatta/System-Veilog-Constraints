@@ -303,6 +303,65 @@ class example;
 
   }
 
+21. Write a SystemVerilog program to randomize a 32-bit variable, but
+only randomize the 12th bit.
+sol:
+ class packet;
+randc bit[31:0] a; // Declare a 32-bit random variable named "a"
+constraint abc { foreach (a[i]) {
+                 if (i == 12)
+                a[i] inside {0, 1}; // Randomize the 12th bit of "a" to either 0 or 1
+                   else
+                   a[i] == 0; // Set all other bits of "a" to 0
+                     }
+                      }
 endclass
 
-21.
+21.How to generate a sequence of 10 random single-bit values that
+alternate between 0 and 1 like 101010101010?
+sol:
+class example;
+
+  rand bit a[10];
+
+  constraint alt_c {
+    foreach(a[i]) {
+      if(i % 2 == 0)
+        a[i] == 1;
+      else
+        a[i] == 0;
+    }
+  }
+
+endclass
+
+22. Write a constraint to generate prime numbers between the range of
+1 to 100.
+sol:
+ class example;
+
+  rand int num;
+
+  constraint range_c {
+    num inside {[2:100]};   // 1 is not prime
+  }
+
+  constraint prime_c {
+
+    foreach(int i[2:99])
+      !(i < num && num % i == 0);
+
+  }
+
+endclass 
+
+23. Write a constraint for 16bit addr which should contain 9 th bit
+as 1 but should not have constitutive 1
+sol:
+constraint c {
+  addr[8] == 1;
+  foreach(addr[i])
+    if(i > 0)
+      !(addr[i] && addr[i-1]);
+}
+24. 
