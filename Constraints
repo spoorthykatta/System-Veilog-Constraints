@@ -30,7 +30,146 @@
                       endclass
 
 
+2. Constraint for unique elements in an array without using unique keyword
+sol:      class packet;
+             rand bit [3:0]a[];
+         constraint c1{a.size==10;
+          foreach(a[i])
+         foreach(a[j])
+            if(i != j)a[i] != a[j];
+             }
+        endclass
 
+3. Write a constraint for 4 -bit dynamic array in such a way that the size of the array
+should be in between 15 to 20 with even numbers in odd location and odd numbers
+in even location
+sol:
+          class packet; 
+           rand bit [3:0]a[];
+        constraint cname { a.size() inside {[15:20]};
+        foreach(a[i])
+         if(i%2==1) a[i]%2==0;
+         else if(i%2==0) a[i]%2==1;}
+        endclass
 
+4. Constraint for ascending/descending order of elements in an array
+sol:
+class packet;
+rand bit [4:0]a[];
+constraint c1 {a.size==10;
+foreach(a[i])
+if(i>0)
+// a[i] > a[i-1]; }//ascending order a[1]>a[0]
+a[i] < a[i-1];}//descending order a[1]<a[0]
+endclass
 
+5. Constraint to generate a real 10 number between 1.356 to 2.683
+sol:
+  class realnum;
+rand int r_num [];
+real num [10];
+constraint sizel {r_num.size==10;}
+constraint range{ foreach (r_num [i])
+r_num[i] inside {[1356:2683]};}
+function void post_randomize();
+foreach (num [i])
+begin
+num[i]=r_num[i]/1000.0;
+$display ("real = %1.3f",num[i]);
+end
+endfunction
+endclass
 
+6. Take 6 digital numbers sum of first and last number should be equal to 8
+sol:
+ class example;
+
+  rand int a[6];
+  
+  // sum of first and last digit = 8
+  constraint sum_c {
+    a[0] + a[5] == 8;//  a[0] + a[$size(a)-1] == 8;
+  }
+
+endclass
+
+7. Constraint to generate unique numbers between 99 to 100.
+sol:
+  class example;
+
+  rand int val;
+  real num;
+
+  constraint range_c {
+    val inside {[9900:10000]};
+  }
+
+  function void post_randomize();
+    num = val / 100.0;
+  endfunction
+
+endclass
+
+8. Without inside operator generate random values for the range 34-43.
+sol: 
+class example;
+
+  rand int num;
+
+  constraint range_c {
+    num >= 34;
+    num <= 43;
+  }
+
+endclass
+
+9. Constraint for the fibonacci series-->0,1,1,2,3,5,8,13,21,34
+sol: 
+class fib;
+rand int array[];
+constraint c1{array.size==10;
+foreach(array[i])
+if(i==0) array[i]==0;
+else if(i==1)
+array[i]==1;
+else
+array[i]==array[i-2]+array[i-1]; }
+endclass
+
+10. constraint for factorial number --> 5!=5*4*3*2*1
+sol:
+   class example;
+
+  rand int n;
+  int fact;
+
+  // limit n to small numbers
+  constraint range_c {
+    n >= 1;
+    n <= 6;
+  }
+
+  function void post_randomize();
+    fact = 1;
+    for(int i = 1; i <= n; i++)
+      fact = fact * i;
+  endfunction
+
+endclass
+
+11. write a constraint for palindrome numbers(do it for string)--> 12321
+sol:
+ class palindrome;
+rand bit [2:0] n,array[];
+constraint pal {array.size == 5;
+foreach (array[i])
+array[i] == array[(n-1)-i];//array[0]==array[4]
+}
+endclass
+
+12. write a constraint for palindrome numbers(do it for string)
+sol:
+ constraint pal_c {
+  foreach(num[i])
+    num[i] == num[$size(num)-1-i];
+}
