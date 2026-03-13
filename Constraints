@@ -1,0 +1,36 @@
+    1. Write a constraint to meet all conditions:
+            Write a constraint to generate 1k to 2k value weight is 20 %
+            2nd condition:--> generate odd numbers that should not fallen into that 1k to 2k Weight is 20%
+            3rd condition:--> generate random numbers 1k to 2k and weight is 60% that should not fallen into that
+
+         sol:              class example;
+
+                             rand int num;
+                              rand int sel;   // selector for condition
+
+                                   constraint sel_c {sel dist {0 := 20, 1 := 20, 2 := 60};}
+
+                                       constraint num_c {
+
+                                             if(sel == 0) {               // 20%
+                                          num inside {[1000:2000]};
+                                           }
+
+                                          if(sel == 1) {               // 20%
+                                        !(num inside {[1000:2000]});
+                                          num % 2 == 1;              // odd numbers
+                                          }
+
+                                         if(sel == 2) {               // 60%
+                                       num inside {[1000:2000]};
+                                        }
+
+                                        }
+
+                      endclass
+
+
+
+
+
+
