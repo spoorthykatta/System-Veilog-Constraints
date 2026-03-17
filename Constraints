@@ -364,4 +364,17 @@ constraint c {
     if(i > 0)
       !(addr[i] && addr[i-1]);
 }
-24. 
+
+24. Constraint to generate odd numbers from 51 to 99 without using modulus operator
+sol:
+ class example;
+
+  rand int num;
+
+  constraint odd_c {
+    num >= 51;
+    num <= 99;
+    num[0] == 1;   // LSB = 1 → odd number
+  }
+
+endclass
